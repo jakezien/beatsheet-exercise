@@ -15,7 +15,6 @@ const useBeatSheetService = () => {
   // Fetching
   async function fetchData<T>(url: string, errorText: string): Promise<T> {
     try {
-      console.log(url)
       const res = await fetch(url);
       if (!res.ok) { throw new Error(`${errorText} ${res.statusText}`); }
       const data: T = await res.json();
@@ -46,8 +45,8 @@ const useBeatSheetService = () => {
     }));
 
     const beatSheet: BeatSheet = {
-      name: "",
-      id: 0, // TODO: don't hardcode this, set to value of last sheet
+      name: "Beatsheet",
+      id: 0, // TODO: don't hardcode these, set to value of last sheet
       acts: acts
     }
 

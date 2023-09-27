@@ -5,3 +5,4 @@ interface Beat {
   cameraAngle: string,
   notes: string
 }
+
