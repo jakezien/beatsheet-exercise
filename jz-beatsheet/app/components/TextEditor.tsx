@@ -1,39 +1,38 @@
 'use client'
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback  } from "react"
 import { useBeatSheet } from "../context/BeatSheetContext"
-import { useMarkdownService } from "../services/useMarkdownService"
+import { useMarkdownService } from "../context/useMarkdownService"
 
 const TextEditor: React.FC = () => {
-  let { sheet, doSet } = useBeatSheet()
+  let { sheet, setSheet, updateSheetWithMarkdown } = useBeatSheet()
   const { actToMarkdown, beatToMarkdown } = useMarkdownService()
   const [text, setText] = useState("")
 
+  const markdownForSheet = useCallback((sheet: BeatSheet) => {
+    return sheet.acts.map(actToMarkdown).join('');
+  }, [actToMarkdown]);
 
-  function markdownForSheet(sheet: BeatSheet) {
-    var newText = ""
-
-    for (let i in sheet.acts) {
-      let act = sheet.acts[i]
-      newText += actToMarkdown(act)
-    }
-
-    return newText
-  }    
-
-  
   useEffect(() => {
-    let newText = markdownForSheet(sheet)
-    setText(newText)
-  }, [sheet])
+    let newMarkdown = markdownForSheet(sheet)
+    console.log(`useeffect ${newMarkdown.length}`)
+    setText(markdownForSheet(sheet));
+  }, [sheet, markdownForSheet]);
+
+  const handleChange = useCallback((event:  React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newText = event.target.value;
+    setText(newText);
+    updateSheetWithMarkdown(newText)
+  }, [setText, updateSheetWithMarkdown]);
+
 
   return (<>
     <form className="w-full h-screen">
       <div className="w-full h-full">
         <textarea
           spellCheck="false"
-          className="w-full h-full"
+          className="w-full h-full p-4 bg-stone-100"
           value={text}
-          onChange={(event) => setText(event.target.value)}
+          onChange={handleChange}
         />
       </div>
     </form>
