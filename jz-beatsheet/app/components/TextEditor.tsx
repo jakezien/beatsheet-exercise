@@ -1,9 +1,13 @@
 'use client'
-import { useEffect, useState, useCallback  } from "react"
+import { useEffect, useState, useCallback, PropsWithChildren  } from "react"
 import { useBeatSheet } from "../context/BeatSheetContext"
 import { useMarkdownService } from "../context/useMarkdownService"
 
-const TextEditor: React.FC = () => {
+interface Props {
+  className?: string
+}
+
+const TextEditor: React.FC<Props> = ({className}) => {
   let { sheet, setSheet, updateSheetWithMarkdown } = useBeatSheet()
   const { actToMarkdown, beatToMarkdown } = useMarkdownService()
   const [text, setText] = useState("")
@@ -26,7 +30,7 @@ const TextEditor: React.FC = () => {
 
 
   return (<>
-    <form className="w-full h-screen">
+    <form className={`w-full h-screen ${className}`}>
       <div className="w-full h-full">
         <textarea
           spellCheck="false"

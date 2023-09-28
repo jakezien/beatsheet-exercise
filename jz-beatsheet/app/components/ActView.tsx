@@ -57,13 +57,16 @@ const ActView: React.FC<Props> = ({ act, moveAct, findAct }) => {
   return (
     <div
       ref={(node) => drag(drop(node))}
-      className={`mb-6 w-fit ${isDragging ? 'opacity-0' : 'opacity-100'} bg-neutral-200 text-stone-600 rounded-lg shadow-sm`}
+      className={`mb-6 cursor-all-scroll w-fit ${isDragging ? 'opacity-0' : 'opacity-100'} bg-neutral-200 text-stone-600 rounded-lg shadow-sm`}
     >
       <div className="flex justify-between p-2 pb-3">
-        <h2 className="text-2xl font-medium tracking-tight">{act?.name}</h2>
+        <h2 className="text-2xl font-medium tracking-tight">
+          <span className="mr-1 cursor-all-scroll opacity-40 hover:opacity-75 active:opacity-100" aria-description="Grip handle">⠿</span> 
+          {act?.name}
+        </h2>
         <button
-          className="text-2xl w-8 h-8 text-neutral-400 hover:bg-red-200 hover:text-red-700 transition-colors rounded-md"
-          aria-name="Delete"
+          className="text-2xl w-h-8 text-neutral-400 hover:bg-red-200 hover:text-red-700 transition-colors rounded-md"
+          role="delete"
           onClick={() => { removeAct(act) }}>
           ×
         </button>

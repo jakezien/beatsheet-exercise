@@ -56,10 +56,13 @@ const BeatView: React.FC<Props> = ({ beat, moveBeat, findBeat, className }) => {
       className={`aspect-4/3 w-44 mb-2 px-2 pt-2 pb-4 rounded ${isDragging ? 'opacity-0' : 'opacity-100'} bg-stone-100 shadow-sm overflow-scroll ${className}`}
     >
       <div className="flex flex-row justify-between ">
-        <h3 className="font-medium">{beat?.name}</h3>
+        <h3 className="font-medium">
+          <span className="mr-1 cursor-all-scroll opacity-40 hover:opacity-75 active:opacity-100" aria-description="Grip handle">⠿</span>
+          {beat?.name}
+        </h3>
         <button
           className="text-xl w-8 h-8 -mr-1 -mt-1 text-neutral-300 hover:bg-red-200 hover:text-red-700 transition-colors rounded-md"
-          aria-name="Delete"
+          role="delete"
           onClick={() => {removeBeat(beat)}}>
           ×
         </button>

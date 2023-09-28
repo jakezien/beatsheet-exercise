@@ -5,7 +5,11 @@ import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import ActView from "./ActView"
 
-const SheetView: React.FC = () => {
+interface Props {
+  className?: string
+}
+
+const SheetView: React.FC<Props> = ({className}) => {
   const { sheet, setSheet } = useBeatSheet()
 
 
@@ -39,7 +43,7 @@ const SheetView: React.FC = () => {
 
 
   return (
-    <div className="w-full h-full bg-neutral-300 p-4">
+    <div className={`w-full h-full bg-neutral-300 p-4 ${className}`}>
       <DndProvider backend={HTML5Backend}>
 
         {sheet.acts.map((act, i) =>
