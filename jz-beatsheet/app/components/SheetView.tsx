@@ -6,10 +6,10 @@ import { HTML5Backend } from "react-dnd-html5-backend"
 import ActView from "./ActView"
 
 const SheetView: React.FC = () => {
-  const { sheet, setSheet } = useBeatSheet()
+  const { sheet, doSet } = useBeatSheet()
   
   useEffect(() => {
-    
+    console.log("new sheet in sheetView", sheet)
   }, [sheet])
 
   const findAct = useCallback(
@@ -31,12 +31,13 @@ const SheetView: React.FC = () => {
         let newActs = [...sheet.acts] 
         newActs.splice(oldIndex, 1) 
         newActs.splice(newIndex, 0, act) 
-        setSheet({ ...sheet, acts: newActs }) 
+        newActs = newActs.map((act, index) => ({ ...act, id: index + 1 }));
+        doSet({ ...sheet, acts: newActs }) 
       } else {
         console.error(`Act with id ${id} not found`)
       }
     },
-    [sheet, setSheet, findAct], // Include setSheet in the dependency list if it comes from a useState or useContext hook
+    [sheet, doSet, findAct]
   )
 
 
@@ -44,7 +45,13 @@ const SheetView: React.FC = () => {
     <div className="w-full h-full bg-stone-500 p-4">
       <DndProvider backend={HTML5Backend}>
         {sheet.name && <h1>{sheet.name}</h1>}
-        {sheet.acts.map((act, i) => <ActView act={act} key={i} moveAct={moveAct} findAct={findAct}/>)}
+        {sheet.acts.map((act, i) =>
+          <ActView
+            key={act.id}
+            act={act}
+            moveAct={moveAct}
+            findAct={findAct}
+          />)}
       </DndProvider>
     </div>
   )

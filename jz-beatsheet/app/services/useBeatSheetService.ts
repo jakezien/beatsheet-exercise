@@ -53,7 +53,12 @@ const useBeatSheetService = () => {
     return beatSheet
   }
 
-  return { sheet, setSheet }
+  function doSet(sheet: BeatSheet) {
+    console.log(sheet)
+    setSheet(sheet)
+  }
+
+  return { sheet, doSet }
 
 }
 

@@ -1,3 +1,4 @@
+import BeatView from "./BeatView"
 import { DraggableItemTypes } from "./SheetView"
 import { useDrag, useDrop } from "react-dnd"
 
@@ -23,19 +24,23 @@ const ActView: React.FC<Props> = ({ act, moveAct, findAct }) => {
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }), end: (item, monitor) => {
-
+      const { draggedAct, originalIndex } = item
+      const didDrop = monitor.didDrop()
+      if (!didDrop) {
+        moveAct(`${draggedAct.id}`, originalIndex)
+      }
     }
-  }))
+  }), [act, originalIndex, moveAct])
 
 
   const [, drop] = useDrop(
     () => ({
       accept: DraggableItemTypes.Act,
-      hover({ draggedAct: draggedAct }: DragItem) {
+      hover(item: DragItem) {
         console.log()
-        if (draggedAct !== act) {
+        if (item.draggedAct !== act) {
           const { index: overIndex } = findAct(`${act.id}`)
-          moveAct(`${draggedAct.id}`, overIndex)
+          moveAct(`${item.draggedAct.id}`, overIndex)
         }
       },
     }),
@@ -46,7 +51,17 @@ const ActView: React.FC<Props> = ({ act, moveAct, findAct }) => {
       ref={(node) => drag(drop(node))}
       className={`bg-gray-100 mb-2 ${isDragging ? 'opacity-20' : 'opacity-100'}`}
     >
-      <h2>{act?.name}</h2>
+      <h2>{`${act?.id}` + act?.name}</h2>
+      <div className="flex lg:flex-row">
+        {act?.beats?.map((beat, index) =>
+          <BeatView
+            beat={beat}
+            key={beat.id}
+            moveBeat={moveAct}
+            findBeat={findAct}
+            className='mr-2'
+        />)}
+      </div>
     </div>
   )
 }

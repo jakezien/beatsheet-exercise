@@ -1,4 +1,5 @@
 interface Beat {
+  id: number,
   name: string,
   time: string,
   content: string,

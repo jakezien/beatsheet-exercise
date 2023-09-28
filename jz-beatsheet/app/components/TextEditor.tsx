@@ -4,7 +4,7 @@ import { useBeatSheet } from "../context/BeatSheetContext"
 import { useMarkdownService } from "../services/useMarkdownService"
 
 const TextEditor: React.FC = () => {
-  let { sheet, setSheet } = useBeatSheet()
+  let { sheet, doSet } = useBeatSheet()
   const { actToMarkdown, beatToMarkdown } = useMarkdownService()
   const [text, setText] = useState("")
 

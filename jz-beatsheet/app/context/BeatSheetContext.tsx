@@ -4,21 +4,23 @@ import useBeatSheetService from '../services/useBeatSheetService';
 
 interface BeatSheetContextType {
   sheet: BeatSheet;
-  setSheet: React.Dispatch<React.SetStateAction<BeatSheet | undefined>>;
+  // setSheet: React.Dispatch<React.SetStateAction<BeatSheet | undefined>>;
+  doSet: (sheet:BeatSheet)=>void
 }
 
 const defaultContextValue: BeatSheetContextType = {
   sheet: { name: "", id: 0, acts: [] },
-  setSheet: () => {} // default no-op function
+  // setSheet: () => { },
+  doSet: () => {}
 }
 
 const BeatSheetContext = React.createContext<BeatSheetContextType>(defaultContextValue)
 
 export const BeatSheetProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const { sheet, setSheet } = useBeatSheetService()
+  const { sheet, doSet } = useBeatSheetService()
 
   return (
-    <BeatSheetContext.Provider value={{ sheet: sheet ?? defaultContextValue.sheet, setSheet }}>
+    <BeatSheetContext.Provider value={{ sheet: sheet ?? defaultContextValue.sheet, doSet }}>
       {children}
     </BeatSheetContext.Provider>
   )
