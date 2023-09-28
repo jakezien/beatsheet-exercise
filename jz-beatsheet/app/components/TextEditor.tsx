@@ -6,7 +6,7 @@ import { useMarkdownService } from "../services/useMarkdownService"
 const TextEditor: React.FC = () => {
   let { sheet, setSheet } = useBeatSheet()
   const { actToMarkdown, beatToMarkdown } = useMarkdownService()
-  const [text, setText] = useState(`${sheet.acts.length}`)
+  const [text, setText] = useState("")
 
 
   function markdownForSheet(sheet: BeatSheet) {
