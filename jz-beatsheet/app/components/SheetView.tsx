@@ -6,45 +6,42 @@ import { HTML5Backend } from "react-dnd-html5-backend"
 import ActView from "./ActView"
 
 const SheetView: React.FC = () => {
-  const { sheet, doSet } = useBeatSheet()
-  
+  const { sheet, setSheet } = useBeatSheet()
+
+
   useEffect(() => {
-    console.log("new sheet in sheetView", sheet)
-  }, [sheet])
+    console.log('SheetView rendered!', sheet);
+  }, [sheet]);
 
-  const findAct = useCallback(
-    (id: string) => {
-      const act = sheet.acts.filter((a) => `${a.id}` === id)[0] 
-      return {
-        act,
-        index: sheet.acts.indexOf(act),
-      }
-    },
-    [sheet.acts],
-  )
+  const findAct = (id: string, currentSheet: BeatSheet) => {
+    const act = currentSheet.acts.find((a) => `${a.id}` === id);
+    return {
+      act,
+      index: act ? currentSheet.acts.indexOf(act) : -1,
+    };
+  }
 
-  const moveAct = useCallback(
-    (id: string, newIndex: number) => {
-      const { act, index: oldIndex } = findAct(id)
-      
-      if (act && oldIndex !== -1) { // Ensure act is found and oldIndex is valid
-        let newActs = [...sheet.acts] 
-        newActs.splice(oldIndex, 1) 
-        newActs.splice(newIndex, 0, act) 
-        newActs = newActs.map((act, index) => ({ ...act, id: index + 1 }));
-        doSet({ ...sheet, acts: newActs }) 
-      } else {
-        console.error(`Act with id ${id} not found`)
-      }
-    },
-    [sheet, doSet, findAct]
-  )
+  
+  const moveAct = (id: string, newIndex: number) => {
+    const { act, index: oldIndex } = findAct(id, sheet);
+    console.log(`Sheet in MoveAct: ${sheet.acts}`)
+    if (act && oldIndex !== -1) {
+      let newActs = [...sheet.acts];
+      console.log( newActs )
+      newActs.splice(oldIndex, 1);
+      newActs.splice(newIndex, 0, act);      
+      setSheet({ ...sheet, acts: newActs });
+    } else {
+      console.error(`Act with id ${id} not found`);
+    }
+  }
+    
 
 
   return (
-    <div className="w-full h-full bg-stone-500 p-4">
+    <div className="w-full h-full bg-neutral-300 p-4">
       <DndProvider backend={HTML5Backend}>
-        {sheet.name && <h1>{sheet.name}</h1>}
+
         {sheet.acts.map((act, i) =>
           <ActView
             key={act.id}
